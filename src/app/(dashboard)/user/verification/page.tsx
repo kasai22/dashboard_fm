@@ -49,10 +49,9 @@ const UserVerificationPage = () => {
     setStatus("");
 
     try {
-      const res = await axios.get(
-        `${API_BASE}/start_session/${userId}?direction=${direction}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const res = await axios.get(`${API_BASE}/start_session/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setSession(res.data);
       setEditedText(res.data.text_blob || "");
