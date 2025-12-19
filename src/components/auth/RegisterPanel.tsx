@@ -29,8 +29,12 @@ export default function RegisterPanel() {
     setLoading(true);
 
     try {
-      await axios.post(`${API_BASE}/register`, form, {
-        headers: { "Content-Type": "application/json" },
+      await axios.post(`${API_BASE}/register`, {
+        full_name: form.full_name,
+        college_id: form.college_id,
+        college_name: form.college_name,
+        mobile_number: form.mobile_number,
+        email: form.email,
       });
 
       setSuccess("Registration successful. Please login.");

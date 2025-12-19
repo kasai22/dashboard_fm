@@ -10,7 +10,7 @@ declare global {
   }
 }
 
-const API_BASE = process.env.NEXTAUTH_URL;
+const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
 
 // Load Google Script
