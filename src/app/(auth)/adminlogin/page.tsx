@@ -28,13 +28,9 @@ export default function AdminLoginPage() {
       formData.append("email", email.trim());
       formData.append("password", password);
 
-      const res = await axios.post(
-        `${process.env.NEXTAUTH_URL}/admin/login`,
-        formData,
-        {
-          headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        }
-      );
+      const res = await axios.post(`${API_BASE}/admin/login`, formData, {
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      });
 
       const token = res.data?.access_token;
       if (!token) {
