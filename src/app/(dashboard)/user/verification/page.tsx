@@ -122,7 +122,9 @@ const UserVerificationPage = () => {
   return (
     <>
       <div className="min-h-screen bg-slate-100 flex flex-col">
-        <Header showProfile={true} />
+        <div className="hidden md:block">
+          <Header showProfile={true} />
+        </div>
         <div className="min-h-screen bg-slate-100 md:flex">
           {/* SIDEBAR (mobile + desktop) */}
           <Sidebar active="verification" />
