@@ -142,8 +142,9 @@ export default function DashboardPage() {
 
   return (
     <>
-      <Header showProfile={true} />
-      <div className="min-h-screen bg-slate-100 md:flex">
+      <div className="min-h-screen bg-slate-100 flex flex-col">
+        <Header showProfile={true} />
+
         {/* SIDEBAR (mobile + desktop handled internally) */}
         <Sidebar active="dashboard" />
 
