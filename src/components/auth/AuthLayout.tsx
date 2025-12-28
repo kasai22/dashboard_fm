@@ -14,7 +14,9 @@ export default function AuthLayout({
 
       <div className="min-h-[calc(100vh-64px)] bg-white flex items-center px-6">
         <div className="w-full flex gap-10">
-          <AuthLeftPanel />
+          <div className="md:block hidden">
+            <AuthLeftPanel />
+          </div>
           <div className="flex-1 flex items-center justify-center">
             {children}
           </div>
