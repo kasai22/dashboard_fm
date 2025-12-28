@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import Sidebar from "@/components/Sidebar";
 import { getCookie, deleteCookie } from "cookies-next";
+import Header from "@/components/Header";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -31,7 +32,7 @@ interface Activity {
   id: number;
   completed_at: string | null;
   audio_url?: string;
-  action: "correct" | "incorrect" | "edited" | null;
+  action: "Correct" | "Incorrect" | "Edited" | null;
 }
 
 /* ---------------- HELPERS ---------------- */
@@ -141,6 +142,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-slate-100 md:flex">
+      <Header showProfile={true} />
       {/* SIDEBAR (mobile + desktop handled internally) */}
       <Sidebar active="dashboard" />
 

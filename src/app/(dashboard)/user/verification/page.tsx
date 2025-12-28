@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 
 import Sidebar from "@/components/Sidebar";
 import TransliterationTextBox from "@/components/TransliterationTextBox";
+import Header from "@/components/Header";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
@@ -120,6 +121,8 @@ const UserVerificationPage = () => {
 
   return (
     <div className="min-h-screen bg-slate-100 md:flex">
+      <Header showProfile={true} />
+
       {/* SIDEBAR (mobile + desktop) */}
       <Sidebar active="verification" />
 

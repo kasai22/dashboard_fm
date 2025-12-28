@@ -3,11 +3,10 @@ import GoogleSignInBtn from "@/components/GoogleSignInBtn";
 export function LoginPanel() {
   return (
     <div className="bg-slate-50 border rounded-2xl p-6">
-      <ul className="space-y-3 align-left text-sm text-slate-700">
-        <li>⭐ Review audio accuracy</li>
-        <li>⭐ Track verification</li>
-        <li>⭐ Build Telugu dataset</li>
-      </ul>
+      <ol className="space-y-3 align-left text-sm text-slate-700">
+        <li> Vertification of audio and text pairs</li>
+        <li> Enabling voice agents for small holder telugu farmers</li>
+      </ol>
 
       <div className="mt-6">
         <GoogleSignInBtn />
