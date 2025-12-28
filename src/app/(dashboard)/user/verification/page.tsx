@@ -2,15 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getCookie } from "cookies-next";
+import { getCookie, deleteCookie } from "cookies-next";
+import { useRouter } from "next/navigation";
 
-import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
 import TransliterationTextBox from "@/components/TransliterationTextBox";
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL;
 
 const UserVerificationPage = () => {
+  const router = useRouter();
+
   const [token, setToken] = useState<string | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
 
@@ -19,7 +21,6 @@ const UserVerificationPage = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-
   const [loading, setLoading] = useState(true);
   const [status, setStatus] = useState("");
 
@@ -28,21 +29,21 @@ const UserVerificationPage = () => {
     try {
       const t = getCookie("jwt") as string | undefined;
       if (!t) {
-        window.location.href = "/login";
+        router.replace("/login");
         return;
       }
 
       const payload = JSON.parse(atob(t.split(".")[1]));
       setToken(t);
       setUserId(payload.id);
-    } catch (err) {
-      console.error("Invalid JWT");
-      window.location.href = "/login";
+    } catch {
+      deleteCookie("jwt");
+      router.replace("/login");
     }
-  }, []);
+  }, [router]);
 
   /* ---------------- LOAD SESSION ---------------- */
-  const loadSession = async (direction: "current" | "next") => {
+  const loadSession = async () => {
     if (!token || !userId) return;
 
     setLoading(true);
@@ -57,8 +58,7 @@ const UserVerificationPage = () => {
       setEditedText(res.data.text_blob || "");
       setIsEditing(false);
       setSubmitted(false);
-    } catch (err) {
-      console.error("Failed to load session", err);
+    } catch {
       setStatus("❌ Failed to load question");
     } finally {
       setLoading(false);
@@ -66,10 +66,10 @@ const UserVerificationPage = () => {
   };
 
   useEffect(() => {
-    if (token && userId) loadSession("current");
+    if (token && userId) loadSession();
   }, [token, userId]);
 
-  /* ---------------- SUBMIT & AUTO-NEXT ---------------- */
+  /* ---------------- SUBMIT ---------------- */
   const submit = async (type: "correct" | "incorrect" | "edited") => {
     if (!session || submitted) return;
 
@@ -99,106 +99,98 @@ const UserVerificationPage = () => {
       });
 
       setStatus("✅ Saved. Loading next...");
-      await loadSession("next");
-    } catch (err) {
-      console.error("Submit failed", err);
+      await loadSession();
+    } catch {
       setStatus("❌ Failed to save response");
       setSubmitted(false);
     }
   };
 
-  /* ---------------- UI ---------------- */
   if (loading && !session) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-100">
-        <p className="text-slate-700">Loading Verification Page.</p>
+      <div className="min-h-screen flex items-center justify-center">
+        Loading verification…
       </div>
     );
   }
 
-  const disableActions = submitted || loading;
-
-  const btn =
-    "px-10 py-3 rounded-full font-semibold transition transform active:scale-95 hover:scale-105";
+  const disableActions = loading || submitted;
+  const btnBase =
+    "px-6 py-3 rounded-full font-semibold transition active:scale-95";
 
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col">
-      <Header />
+    <div className="min-h-screen bg-slate-100 md:flex">
+      {/* SIDEBAR (mobile + desktop) */}
+      <Sidebar active="verification" />
 
-      <div className="flex flex-1">
-        <aside className="w-64 bg-[#00863F] text-white">
-          <Sidebar active="verification" />
-        </aside>
+      {/* MAIN */}
+      <main className="flex-1 px-4 md:px-8 py-6 md:py-8">
+        {status && <div className="mb-4 text-sm text-green-600">{status}</div>}
 
-        <main className="flex-1 p-8">
-          {status && (
-            <div className="mb-4 text-green-600 text-sm">{status}</div>
-          )}
-
-          <div className="bg-white rounded-3xl p-8 shadow">
-            <div className="flex text-black justify-between mb-6">
-              <h2 className="text-xl font-semibold">
-                Question {session.completed_tasks + 1}
-              </h2>
-              <span className="text-sm text-slate-500">
-                Tasks {session.completed_tasks} / {session.total_tasks}
-              </span>
-            </div>
-
-            {/* AUDIO */}
-            <audio controls className="w-full mb-6" src={session.audio_url} />
-
-            {/* TEXT */}
-            <TransliterationTextBox
-              value={editedText}
-              onChange={setEditedText}
-              isEditing={isEditing && !disableActions}
-              lang="te-t-i0-und"
-            />
-
-            {/* ACTIONS */}
-            <div className="flex justify-center gap-4 mt-8">
-              <button
-                disabled={disableActions}
-                onClick={() => submit("correct")}
-                className={`${btn} ${
-                  disableActions
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-green-600 text-white hover:bg-green-700"
-                }`}
-              >
-                ✓ Correct
-              </button>
-
-              <button
-                disabled={disableActions}
-                onClick={() => submit("incorrect")}
-                className={`${btn} ${
-                  disableActions
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-red-500 text-white hover:bg-red-600"
-                }`}
-              >
-                ✕ Incorrect
-              </button>
-
-              <button
-                disabled={disableActions}
-                onClick={() =>
-                  isEditing ? submit("edited") : setIsEditing(true)
-                }
-                className={`${btn} ${
-                  disableActions
-                    ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                ✎ {isEditing ? "Save" : "Edit"}
-              </button>
-            </div>
+        <div className="bg-white rounded-3xl shadow p-6 md:p-8">
+          {/* HEADER */}
+          <div className="flex justify-between mb-6">
+            <h2 className="text-lg md:text-xl font-semibold">
+              Question {session.completed_tasks + 1}
+            </h2>
+            <span className="text-xs md:text-sm text-slate-500">
+              {session.completed_tasks} / {session.total_tasks}
+            </span>
           </div>
-        </main>
-      </div>
+
+          {/* AUDIO */}
+          <audio controls className="w-full mb-6" src={session.audio_url} />
+
+          {/* TEXT BOX */}
+          <TransliterationTextBox
+            value={editedText}
+            onChange={setEditedText}
+            isEditing={isEditing && !disableActions}
+            lang="te-t-i0-und"
+          />
+
+          {/* ACTION BUTTONS */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+            <button
+              disabled={disableActions}
+              onClick={() => submit("correct")}
+              className={`${btnBase} ${
+                disableActions
+                  ? "bg-gray-300"
+                  : "bg-green-600 text-white hover:bg-green-700"
+              }`}
+            >
+              ✓ Correct
+            </button>
+
+            <button
+              disabled={disableActions}
+              onClick={() => submit("incorrect")}
+              className={`${btnBase} ${
+                disableActions
+                  ? "bg-gray-300"
+                  : "bg-red-500 text-white hover:bg-red-600"
+              }`}
+            >
+              ✕ Incorrect
+            </button>
+
+            <button
+              disabled={disableActions}
+              onClick={() =>
+                isEditing ? submit("edited") : setIsEditing(true)
+              }
+              className={`${btnBase} ${
+                disableActions
+                  ? "bg-gray-300"
+                  : "bg-blue-500 text-white hover:bg-blue-600"
+              }`}
+            >
+              ✎ {isEditing ? "Save" : "Edit"}
+            </button>
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

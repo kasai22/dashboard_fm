@@ -132,7 +132,7 @@ export default function AdminDashboardPage() {
   const pending = totalTasks - completed;
 
   // Example distribution
-  const unassigned = overviewStats.total_tasks;
+  const unassigned = overviewStats.unassigned_tasks;
   const correct = overviewStats.corrected_tasks;
   const incorrect = overviewStats.incorrect_tasks;
   const edited = overviewStats.edited_tasks;
