@@ -123,80 +123,81 @@ const UserVerificationPage = () => {
     <>
       <div className="min-h-screen bg-slate-100 flex flex-col">
         <Header showProfile={true} />
+        <div className="min-h-screen bg-slate-100 md:flex">
+          {/* SIDEBAR (mobile + desktop) */}
+          <Sidebar active="verification" />
 
-        {/* SIDEBAR (mobile + desktop) */}
-        <Sidebar active="verification" />
+          {/* MAIN */}
+          <main className="flex-1 px-4 md:px-8 py-6 md:py-8">
+            {status && (
+              <div className="mb-4 text-sm text-green-600">{status}</div>
+            )}
 
-        {/* MAIN */}
-        <main className="flex-1 px-4 md:px-8 py-6 md:py-8">
-          {status && (
-            <div className="mb-4 text-sm text-green-600">{status}</div>
-          )}
+            <div className="bg-white rounded-3xl shadow p-6 md:p-8">
+              {/* HEADER */}
+              <div className="flex justify-between mb-6">
+                <h2 className="text-lg md:text-xl font-semibold text-black">
+                  Question {session.completed_tasks + 1}
+                </h2>
+                <span className="text-xs md:text-sm text-slate-500">
+                  {session.completed_tasks + 1} / {session.total_tasks}
+                </span>
+              </div>
 
-          <div className="bg-white rounded-3xl shadow p-6 md:p-8">
-            {/* HEADER */}
-            <div className="flex justify-between mb-6">
-              <h2 className="text-lg md:text-xl font-semibold text-black">
-                Question {session.completed_tasks + 1}
-              </h2>
-              <span className="text-xs md:text-sm text-slate-500">
-                {session.completed_tasks + 1} / {session.total_tasks}
-              </span>
+              {/* AUDIO */}
+              <audio controls className="w-full mb-6" src={session.audio_url} />
+
+              {/* TEXT BOX */}
+              <TransliterationTextBox
+                value={editedText}
+                onChange={setEditedText}
+                isEditing={isEditing && !disableActions}
+                lang="te-t-i0-und"
+              />
+
+              {/* ACTION BUTTONS */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
+                <button
+                  disabled={disableActions}
+                  onClick={() => submit("correct")}
+                  className={`${btnBase} ${
+                    disableActions
+                      ? "bg-gray-300"
+                      : "bg-green-600 text-white hover:bg-green-700"
+                  }`}
+                >
+                  ✓ Correct
+                </button>
+
+                <button
+                  disabled={disableActions}
+                  onClick={() => submit("incorrect")}
+                  className={`${btnBase} ${
+                    disableActions
+                      ? "bg-gray-300"
+                      : "bg-red-500 text-white hover:bg-red-600"
+                  }`}
+                >
+                  ✕ Incorrect
+                </button>
+
+                <button
+                  disabled={disableActions}
+                  onClick={() =>
+                    isEditing ? submit("edited") : setIsEditing(true)
+                  }
+                  className={`${btnBase} ${
+                    disableActions
+                      ? "bg-gray-300"
+                      : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
+                >
+                  ✎ {isEditing ? "Save" : "Edit"}
+                </button>
+              </div>
             </div>
-
-            {/* AUDIO */}
-            <audio controls className="w-full mb-6" src={session.audio_url} />
-
-            {/* TEXT BOX */}
-            <TransliterationTextBox
-              value={editedText}
-              onChange={setEditedText}
-              isEditing={isEditing && !disableActions}
-              lang="te-t-i0-und"
-            />
-
-            {/* ACTION BUTTONS */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-              <button
-                disabled={disableActions}
-                onClick={() => submit("correct")}
-                className={`${btnBase} ${
-                  disableActions
-                    ? "bg-gray-300"
-                    : "bg-green-600 text-white hover:bg-green-700"
-                }`}
-              >
-                ✓ Correct
-              </button>
-
-              <button
-                disabled={disableActions}
-                onClick={() => submit("incorrect")}
-                className={`${btnBase} ${
-                  disableActions
-                    ? "bg-gray-300"
-                    : "bg-red-500 text-white hover:bg-red-600"
-                }`}
-              >
-                ✕ Incorrect
-              </button>
-
-              <button
-                disabled={disableActions}
-                onClick={() =>
-                  isEditing ? submit("edited") : setIsEditing(true)
-                }
-                className={`${btnBase} ${
-                  disableActions
-                    ? "bg-gray-300"
-                    : "bg-blue-500 text-white hover:bg-blue-600"
-                }`}
-              >
-                ✎ {isEditing ? "Save" : "Edit"}
-              </button>
-            </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </>
   );
