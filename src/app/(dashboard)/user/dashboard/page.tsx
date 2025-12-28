@@ -141,87 +141,97 @@ export default function DashboardPage() {
   if (!user) return <UnauthenticatedScreen />;
 
   return (
-    <div className="min-h-screen bg-slate-100 md:flex">
+    <>
       <Header showProfile={true} />
-      {/* SIDEBAR (mobile + desktop handled internally) */}
-      <Sidebar active="dashboard" />
+      <div className="min-h-screen bg-slate-100 md:flex">
+        {/* SIDEBAR (mobile + desktop handled internally) */}
+        <Sidebar active="dashboard" />
 
-      {/* MAIN */}
-      <main className="flex-1 px-4 md:px-8 py-6 md:py-8 space-y-8">
-        {/* USER CARD */}
-        <section className="bg-white rounded-3xl shadow p-6">
-          <h2 className="text-2xl font-bold text-slate-900">
-            Welcome back,{" "}
-            <span className="text-emerald-700">
-              {user.full_name || user.email.split("@")[0]}
-            </span>
-          </h2>
+        {/* MAIN */}
+        <main className="flex-1 px-4 md:px-8 py-6 md:py-8 space-y-8">
+          {/* USER CARD */}
+          <section className="bg-white rounded-3xl shadow p-6">
+            <h2 className="text-2xl font-bold text-slate-900">
+              Welcome back,{" "}
+              <span className="text-emerald-700">
+                {user.full_name || user.email.split("@")[0]}
+              </span>
+            </h2>
 
-          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-sm">
-            <Info label="Full Name" value={user.full_name} />
-            <Info label="College ID" value={user.college_id} />
-            <Info label="Mobile Number" value={user.mobile_number} />
-            <Info label="Email" value={user.email} />
-            <Info label="College Name" value={user.college_name} />
-          </div>
-        </section>
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 text-sm">
+              <Info label="Full Name" value={user.full_name} />
+              <Info label="College ID" value={user.college_id} />
+              <Info label="Mobile Number" value={user.mobile_number} />
+              <Info label="Email" value={user.email} />
+              <Info label="College Name" value={user.college_name} />
+            </div>
+          </section>
 
-        {/* STATS */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4">Dashboard Overview</h3>
+          {/* STATS */}
+          <section>
+            <h3 className="text-xl font-semibold mb-4">Dashboard Overview</h3>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            <StatCard label="Assigned" value={stats?.assigned_files} />
-            <StatCard label="Correct" value={stats?.correct} green />
-            <StatCard label="Incorrect" value={stats?.incorrect} red />
-            <StatCard label="Edited" value={stats?.edited} blue />
-            <StatCard label="Pending" value={stats?.pending_files} orange />
-          </div>
-        </section>
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              <StatCard label="Assigned" value={stats?.assigned_files} />
+              <StatCard label="Correct" value={stats?.correct} green />
+              <StatCard label="Incorrect" value={stats?.incorrect} red />
+              <StatCard label="Edited" value={stats?.edited} blue />
+              <StatCard label="Pending" value={stats?.pending_files} orange />
+            </div>
+          </section>
 
-        {/* RECENT ACTIVITY */}
-        <section>
-          <h3 className="text-xl font-semibold mb-4">Recent Activity</h3>
+          {/* RECENT ACTIVITY */}
+          <section>
+            <h3 className="text-xl font-semibold mb-4">Recent Activity</h3>
 
-          <div className="bg-white rounded-2xl shadow overflow-hidden">
-            {recent.length === 0 ? (
-              <p className="p-6 text-slate-600">No recent activity found.</p>
-            ) : (
-              <table className="w-full text-sm">
-                <thead className="bg-slate-200 text-slate-600">
-                  <tr>
-                    <th className="text-left px-4 py-3">File Name</th>
-                    <th className="px-4 py-3 text-center">Timestamp</th>
-                    <th className="px-4 py-3 text-center">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y">
-                  {[...recent].reverse().map((item) => (
-                    <tr key={item.id}>
-                      <td className="px-4 py-3">
-                        {getFileName(item.audio_url)}
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        {item.completed_at
-                          ? new Date(item.completed_at).toLocaleString("en-IN")
-                          : "-"}
-                      </td>
-                      <td className="px-4 py-3 text-center font-semibold">
-                        {item.action}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
+            <div className="bg-white rounded-2xl shadow">
+              {recent.length === 0 ? (
+                <p className="p-6 text-slate-600">No recent activity found.</p>
+              ) : (
+                /* SCROLL CONTAINER */
+                <div className="overflow-x-auto">
+                  <table className="min-w-[600px] w-full text-sm whitespace-nowrap">
+                    <thead className="bg-slate-200 text-slate-600">
+                      <tr>
+                        <th className="text-left px-4 py-3">File Name</th>
+                        <th className="px-4 py-3 text-center">Timestamp</th>
+                        <th className="px-4 py-3 text-center">Action</th>
+                      </tr>
+                    </thead>
 
-          <p className="text-sm text-slate-500 mt-3">
-            Showing last {recent.length} attempted items
-          </p>
-        </section>
-      </main>
-    </div>
+                    <tbody className="divide-y">
+                      {[...recent].reverse().map((item) => (
+                        <tr key={item.id}>
+                          <td className="px-4 py-3">
+                            {getFileName(item.audio_url)}
+                          </td>
+
+                          <td className="px-4 py-3 text-center">
+                            {item.completed_at
+                              ? new Date(item.completed_at).toLocaleString(
+                                  "en-IN"
+                                )
+                              : "-"}
+                          </td>
+
+                          <td className="px-4 py-3 text-center font-semibold">
+                            {item.action}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </div>
+
+            <p className="text-sm text-slate-500 mt-3">
+              Showing last {recent.length} attempted items
+            </p>
+          </section>
+        </main>
+      </div>
+    </>
   );
 }
 
