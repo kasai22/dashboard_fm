@@ -130,11 +130,11 @@ const UserVerificationPage = () => {
         <div className="bg-white rounded-3xl shadow p-6 md:p-8">
           {/* HEADER */}
           <div className="flex justify-between mb-6">
-            <h2 className="text-lg md:text-xl font-semibold">
+            <h2 className="text-lg md:text-xl font-semibold text-black">
               Question {session.completed_tasks + 1}
             </h2>
             <span className="text-xs md:text-sm text-slate-500">
-              {session.completed_tasks} / {session.total_tasks}
+              {session.completed_tasks + 1} / {session.total_tasks}
             </span>
           </div>
 
