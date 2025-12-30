@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ active = "dashboard" }) => {
   return (
     <>
       {/* ---------- MOBILE TOP BAR ---------- */}
-      <div className="md:hidden bg-[#00863F] px-4 py-4 flex items-center justify-between text-white">
+      <div className="md:hidden bg-[#00863F] px-4 flex items-center justify-between text-white">
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-16 w-[150px]">
             <Image
