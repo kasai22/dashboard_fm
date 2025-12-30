@@ -51,7 +51,7 @@ const Header: React.FC<HeaderProps> = ({ showProfile = true }) => {
       <Link href="/" className="flex items-center gap-1">
         <div className="relative h-16 w-[150px]">
           <Image
-            src="/farmvaidya_logo_White.svg"
+            src="/farmvaidya_logo.png"
             alt="Farm Vaidya"
             fill
             priority
