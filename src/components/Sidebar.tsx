@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HiOutlineViewGrid, HiOutlinePhone, HiMenu, HiX } from "react-icons/hi";
 import { deleteCookie } from "cookies-next";
-
+import Link from "next/link";
+import Image from "next/image";
 type SidebarActive = "dashboard" | "verification";
 
 interface SidebarProps {
@@ -36,7 +37,17 @@ const Sidebar: React.FC<SidebarProps> = ({ active = "dashboard" }) => {
     <>
       {/* ---------- MOBILE TOP BAR ---------- */}
       <div className="md:hidden bg-[#00863F] px-4 py-4 flex items-center justify-between text-white">
-        <span className="font-semibold text-lg">farm vaidya</span>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="relative h-16 w-[150px]">
+            <Image
+              src="/farmvaidya_logo.png"
+              alt="Farm Vaidya"
+              fill
+              priority
+              className="object-contain"
+            />
+          </div>
+        </Link>
         <button onClick={() => setOpen(true)}>
           <HiMenu className="text-2xl" />
         </button>

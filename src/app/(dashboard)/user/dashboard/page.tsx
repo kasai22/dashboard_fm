@@ -172,7 +172,9 @@ export default function DashboardPage() {
 
             {/* STATS */}
             <section>
-              <h3 className="text-xl font-semibold mb-4">Dashboard Overview</h3>
+              <h3 className="text-xl font-semibold mb-4 text-black">
+                Dashboard Overview
+              </h3>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
                 <StatCard label="Assigned" value={stats?.assigned_files} />
@@ -185,7 +187,9 @@ export default function DashboardPage() {
 
             {/* RECENT ACTIVITY */}
             <section>
-              <h3 className="text-xl font-semibold mb-4">Recent Activity</h3>
+              <h3 className="text-xl font-semibold mb-4 text-black">
+                Recent Activity
+              </h3>
 
               <div className="bg-white rounded-2xl shadow">
                 {recent.length === 0 ? (
