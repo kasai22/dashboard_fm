@@ -48,7 +48,7 @@ const Header: React.FC<HeaderProps> = ({ showProfile = true }) => {
   return (
     <header className="w-full h-16 border-b border-slate-200 bg-white flex items-center justify-between px-[2rem]">
       {/* Logo */}
-      <Link href="/" className="flex items-center gap-2">
+      <Link href="/" className="flex items-center gap-1">
         <div className="relative h-16 w-[150px]">
           <Image
             src="/farmvaidya_logo_White.svg"
