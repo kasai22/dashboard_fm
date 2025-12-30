@@ -207,11 +207,11 @@ export default function DashboardPage() {
                       <tbody className="divide-y">
                         {[...recent].reverse().map((item) => (
                           <tr key={item.id}>
-                            <td className="px-4 py-3">
+                            <td className="px-4 py-3 text-black font-medium">
                               {getFileName(item.audio_url)}
                             </td>
 
-                            <td className="px-4 py-3 text-center">
+                            <td className="px-4 py-3 text-center text-black font-medium">
                               {item.completed_at
                                 ? new Date(item.completed_at).toLocaleString(
                                     "en-IN"
@@ -219,7 +219,7 @@ export default function DashboardPage() {
                                 : "-"}
                             </td>
 
-                            <td className="px-4 py-3 text-center font-semibold">
+                            <td className="px-4 py-3 text-center font-semibold text-black">
                               {item.action}
                             </td>
                           </tr>

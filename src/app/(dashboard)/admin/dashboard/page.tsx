@@ -128,15 +128,14 @@ export default function AdminDashboardPage() {
   /* ------------------------- Derived ------------------------- */
   const totalTasks = stats.tasks_assigned;
   const [completedStr] = stats.throughput.split("/");
-  const completed = Number(completedStr || 0);
-  const pending = totalTasks - completed;
 
   // Example distribution
   const unassigned = overviewStats.unassigned_tasks;
   const correct = overviewStats.corrected_tasks;
   const incorrect = overviewStats.incorrect_tasks;
   const edited = overviewStats.edited_tasks;
-
+  const completed = correct + incorrect + edited;
+  const pending = totalTasks - completed;
   /* ------------------------- Chart ------------------------- */
   const pieData = {
     labels: ["Correct", "Incorrect", "Edited", "Pending"],

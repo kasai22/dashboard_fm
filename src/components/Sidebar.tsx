@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { HiOutlineViewGrid, HiOutlinePhone, HiMenu, HiX } from "react-icons/hi";
+import { deleteCookie } from "cookies-next";
 
 type SidebarActive = "dashboard" | "verification";
 
@@ -21,12 +22,21 @@ const Sidebar: React.FC<SidebarProps> = ({ active = "dashboard" }) => {
 
   const isDashboard = active === "dashboard";
   const isVerification = active === "verification";
+  const logout = () => {
+    // clear auth
+    deleteCookie("jwt");
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+
+    // redirect
+    router.replace("/login");
+  };
 
   return (
     <>
       {/* ---------- MOBILE TOP BAR ---------- */}
       <div className="md:hidden bg-[#00863F] px-4 py-4 flex items-center justify-between text-white">
-        <span className="font-semibold text-lg">farm vaidhya</span>
+        <span className="font-semibold text-lg">farm vaidya</span>
         <button onClick={() => setOpen(true)}>
           <HiMenu className="text-2xl" />
         </button>
